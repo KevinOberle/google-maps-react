@@ -36,12 +36,20 @@ export class Marker extends React.Component {
 
   componentDidUpdate(prevProps) {
     if ((this.props.map !== prevProps.map) ||
-      (this.props.position !== prevProps.position) ||
       (this.props.icon !== prevProps.icon)) {
         if (this.marker) {
             this.marker.setMap(null);
         }
         this.renderMarker();
+    } elseif ((this.props.position !== prevProps.position)) {
+
+    let pos = this.props.position || this.props.mapCenter;
+
+    if (!(pos instanceof google.maps.LatLng)) {
+      pos = new google.maps.LatLng(pos.lat, pos.lng);
+    }
+
+    this.marker.setPosition(pos);    
     }
   }
 
